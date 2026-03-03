@@ -74,7 +74,7 @@ export default function App() {
                 : <><div style={{ fontSize: "2.5rem" }}>📷</div><div style={{ color: GREEN, fontWeight: "bold" }}>음식 사진을 업로드하세요</div><div style={{ color: MUTED, fontSize: "0.8rem" }}>클릭하거나 카메라로 촬영하세요</div></>
               }
             </div>
-            <input ref={fileRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={e => handleFile(e.target.files[0])} />
+            <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => handleFile(e.target.files[0])} />
             {image && <button onClick={analyze} disabled={loading} style={{ width: "100%", background: GREEN, color: "#fff", border: "none", borderRadius: "50px", padding: "14px 0", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>🔍 영양소 분석하기</button>}
             {!image && <div style={{ fontSize: "0.8rem", color: MUTED, textAlign: "center" }}>사진 한 장으로 칼로리, 영양소를 바로 확인하세요!</div>}
           </div>
