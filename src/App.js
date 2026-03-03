@@ -28,13 +28,25 @@ export default function App() {
   const [error, setError] = useState(null);
   const fileRef = useRef();
 
-  const handleFile = (file) => {
+const handleFile = (file) => {
     if (!file || !file.type.startsWith("image/")) return;
     setResult(null); setError(null);
     setImage(URL.createObjectURL(file));
-    const reader = new FileReader();
-    reader.onload = (e) => setImageBase64({ data: e.target.result.split(",")[1], mediaType: file.type });
-    reader.readAsDataURL(file);
+    const canvas = document.createElement("canvas");
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX = 1024;
+      let w = img.width, h = img.height;
+      if (w > h && w > MAX) { h = (h * MAX) / w; w = MAX; }
+      else if (h > MAX) { w = (w * MAX) / h; h = MAX; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      const data = canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+      setImageBase64({ data, mediaType: "image/jpeg" });
+      URL.revokeObjectURL(objectUrl);
+    };
+    img.src = objectUrl;
   };
 
   const analyze = async () => {
